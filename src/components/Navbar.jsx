@@ -8,7 +8,11 @@ function Navbar() {
   return (
     <div className="flex items-center justify-between px-4 md:px-6 lg:px-12 py-4">
       <h1 className="text-xl font-extrabold">
+<<<<<<< HEAD
         <Link to="/">TheBloger</Link>
+=======
+        <Link to="https://thebloger.netlify.app/">TheBloger</Link>
+>>>>>>> 27f3463abeea19fe24453271d0cfb93e80fbbe77
       </h1>
       <div className="hidden md:flex items-center space-x-2 md:space-x-4">
         <CiSearch className="text-gray-600" />
