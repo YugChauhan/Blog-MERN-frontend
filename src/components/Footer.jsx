@@ -75,8 +75,8 @@ function Footer() {
       © 2023 Copyright:
       <a
         className="text-neutral-800 dark:text-neutral-400"
-        href="https://tailwind-elements.com/"
-      >TW Elements</a>
+        href="https://thebloger.netlify.app/"
+      >TheBloger</a>
     </div>
   </footer>
   );

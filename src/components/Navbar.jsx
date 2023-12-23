@@ -8,7 +8,7 @@ function Navbar() {
   return (
     <div className="flex items-center justify-between px-4 md:px-6 lg:px-12 py-4">
       <h1 className="text-xl font-extrabold">
-        <Link to="/">YugBlogs</Link>
+        <Link to="/">TheBloger</Link>
       </h1>
       <div className="hidden md:flex items-center space-x-2 md:space-x-4">
         <CiSearch className="text-gray-600" />
