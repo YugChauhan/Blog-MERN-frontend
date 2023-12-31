@@ -1,7 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from 'axios'
+import {URL} from "../url"
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const [username,setUsername]=useState('')
+  const [email,setEmail]=useState('')
+  const [password,setPassword]=useState('')
+  const [error, setError]=useState(false)
+  const navigate= useNavigate();
+
+  const handleForm =async()=>{ 
+    try{
+    const res=await axios.post(`${URL}/api/auth/register`,{username,email,password})
+    setUsername(res.data.username)
+    setEmail(res.data.email)
+    setPassword(res.data.password)
+    setError(false)
+    navigate("/login")
+    }
+    catch(error){
+      setError(true)
+      console.log("Error while register api",error)
+    }
+  }
+
   return (
+    
     <div className="py-16">
     <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
       <div
@@ -22,6 +47,7 @@ function Register() {
             Username
           </label>
           <input
+            onChange={(e)=>setUsername(e.target.value)}
             className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
             type="text"
           />
@@ -31,6 +57,7 @@ function Register() {
             Email Address
           </label>
           <input
+            onChange={(e)=>setEmail(e.target.value)}
             className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
             type="email"
           />
@@ -42,13 +69,15 @@ function Register() {
             </label>
           </div>
           <input
+            onChange={(e)=>setPassword(e.target.value)}
             className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
             type="password"
           />
         </div>
+        {error && <h3 className="text-red-500 text-sm">Something went wrong</h3>}
         <div className="mt-8">
-          <button className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
-            Login
+          <button onClick={handleForm} className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
+            Register
           </button>
         </div>
       </div>
