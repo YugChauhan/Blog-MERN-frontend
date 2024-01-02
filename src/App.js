@@ -9,11 +9,11 @@ import PostDetails from "./components/PostDetails";
 import { UserContextProvider } from "./context/UserContext";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
     <UserContextProvider>
-      <div>
         <BrowserRouter>
           <Navbar />
           <Routes>
@@ -23,11 +23,10 @@ function App() {
             <Route exact path="/post/post/:id" element={<PostDetails />}></Route>
             <Route exact path="/write" element={<CreatePost/>}></Route>
             <Route exact path="/edit/:id" element={<EditPost />}></Route>
-
+            <Route exact path="/profile/:id" element={<Profile />}></Route>
           </Routes>
           <Footer />
         </BrowserRouter>
-      </div>
     </UserContextProvider>
   );
 }

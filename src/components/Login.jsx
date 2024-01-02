@@ -14,15 +14,16 @@ function Login() {
 
   const handleLogin=async()=>{
     try{
-      const res = await axios.post(URL+'/api/auth/login',{email,password})
+      const res = await axios.post(URL+'/api/auth/login',{email,password},{withCredentials:true})
       console.log("Login successful")
-      
+      setUser(res.data)
       navigate("/")
     }
     catch(error){
       setError(true)
     }
   }
+ 
 
   return (
     <div className="py-16">
