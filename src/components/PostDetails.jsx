@@ -5,7 +5,7 @@ import Comments from "./Comments";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { URL } from "../url";
+import { URL, IF} from "../url";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
@@ -40,7 +40,7 @@ function PostDetails() {
   const fetchPostComment = async () => {
     try{
       const res = await axios.get(URL+"/api/comments/post/"+postId);
-    setComments(res.data);
+      setComments(res.data);
     }
     catch(err){
       console.log(err)
@@ -48,18 +48,19 @@ function PostDetails() {
 
   };
 
-  const handleComment = async () => {
-    const res = await axios.post(
-      URL + "/api/comments/create",
-      {
-        comment: comment,
-        author: user.username,
-        postId: postId,
-        userId: user._id,
-      },
-      { withCredentials: true }
-    );
+  const handleComment = async (e) => {
+    e.preventDefault()
+    try{
+      const res=await axios.post(URL+"/api/comments/create",
+      {comment:comment,author:user.username,postId:postId,userId:user._id},
+      {withCredentials:true})
+    }
+    catch(err){
+      console.log(err)
+    }
+    fetchPostComment()
     setComment("")
+    window.location.reload(true)
   };
 
   useEffect(() => {
@@ -70,7 +71,6 @@ function PostDetails() {
     fetchPostComment();
   }, [postId]);
 
-  // const catergories = posts.categories
   return (
     <div>
       <div className="px-8 md:px-[200px] mt-8">
@@ -101,7 +101,7 @@ function PostDetails() {
             <p>16:45</p>
           </div>
         </div>
-        <img src={posts.photo} alt="Heading_Image" />
+        <img src={IF+posts.photo} alt="Heading_Image" />
         <p className="mt-8 mx-auto text-xl">{posts.desc}</p>
         <div className="flex items-center mt-8 space-x-4 font-semibold">
           <p>Categories:</p>
@@ -113,7 +113,6 @@ function PostDetails() {
             ))}
           </div>
         </div>
-
         {/* Comments */}
         {comments?.map((c)=>(
         <Comments key={c._id} c={c} />
