@@ -3,7 +3,7 @@ import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 import Comments from "./Comments";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { URL } from "../url";
 import { useContext } from "react";
@@ -11,22 +11,63 @@ import { UserContext } from "../context/UserContext";
 
 function PostDetails() {
   const [posts, setPosts] = useState({});
-  const {user}=useContext(UserContext)
-
+  const { user } = useContext(UserContext);
   const postId = useParams().id;
-  // console.log("Post ID:", postId);
+  const navigate = useNavigate();
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
 
   const fetchPosts = async () => {
     try {
-      const res = await axios.get(URL + "/api/post/" + postId);
+      const res = await axios.get(URL +"/api/post/"+postId);
       setPosts(res.data);
     } catch (err) {
       console.log(err);
     }
   };
 
+  //Deleting post
+  const handleDeletePost = async () => {
+    try {
+      const res = await axios.delete(URL + "/api/post/" + postId, {
+        withCredentials: true,
+      });
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchPostComment = async () => {
+    try{
+      const res = await axios.get(URL+"/api/comments/post/"+postId);
+    setComments(res.data);
+    }
+    catch(err){
+      console.log(err)
+    }
+
+  };
+
+  const handleComment = async () => {
+    const res = await axios.post(
+      URL + "/api/comments/create",
+      {
+        comment: comment,
+        author: user.username,
+        postId: postId,
+        userId: user._id,
+      },
+      { withCredentials: true }
+    );
+    setComment("")
+  };
+
   useEffect(() => {
     fetchPosts();
+  }, [postId]);
+
+  useEffect(() => {
+    fetchPostComment();
   }, [postId]);
 
   // const catergories = posts.categories
@@ -37,16 +78,21 @@ function PostDetails() {
           <h1 className="text-2x1 font-bold text-black md:text-3xl ">
             {posts.title}
           </h1>
-          {user?._id===posts?.userId && <div className="flex items-center justify-center space-x-2">
-            <p>
-              <BiEdit />
-            </p>
-            <p>
-              <MdDelete />
-            </p>
-          </div>
-          }
-          
+          {user?._id === posts?.userId && (
+            <div className="flex items-center justify-center space-x-2">
+              <p
+                className="cursor-pointer"
+                onClick={() => {
+                  navigate("/edit/" + postId);
+                }}
+              >
+                <BiEdit />
+              </p>
+              <p className="cursor-pointer" onClick={handleDeletePost}>
+                <MdDelete />
+              </p>
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-between mt-2 md:mt-4">
           <p>{posts.username}</p>
@@ -69,15 +115,23 @@ function PostDetails() {
         </div>
 
         {/* Comments */}
-        <Comments />
+        {comments?.map((c)=>(
+        <Comments key={c._id} c={c} />
+        ))}
         {/* Write Comment */}
         <div className="w-full flex flex-col mt-4 md:flex-row">
           <input
+            onChange={(e) => {
+              setComment(e.target.value);
+            }}
             type="text"
             placeholder="Write a comment"
             className="md:w-[88%] outline-none py-2 px-4 mt-4 md:mt-0"
           />
-          <button className="text-sm bg-black text-white px-4 py-2 md:w-[20% ] mt-4 md:mt-0">
+          <button
+            onClick={handleComment}
+            className="text-sm bg-black text-white px-4 py-2 md:w-[20% ] mt-4 md:mt-0"
+          >
             Add Comment
           </button>
         </div>

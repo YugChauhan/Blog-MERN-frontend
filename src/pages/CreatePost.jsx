@@ -14,7 +14,7 @@ function CreatePost() {
   const [file,setFile]= useState(null)
   const {user} = useContext(UserContext)
   const navigate = useNavigate()
-
+  
   const deleteCategory = (i) => {
   let updatedcats = [...cats];
   updatedcats.splice(i, 1);
@@ -37,11 +37,11 @@ function CreatePost() {
       categories:cats
     }
 
-    if(file) {
+    if(file){
       const data=new FormData()
       const filename=Date.now()+file.name
-      data.append("img", filename)
-      data.append("file", file)
+      data.append("img",filename)
+      data.append("file",file)
       post.photo=filename
       
       //Image upload

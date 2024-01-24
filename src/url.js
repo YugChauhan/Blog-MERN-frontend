@@ -1,1 +1,1 @@
-export const URL="https://the-bloger.onrender.com"
+export const URL="http://localhost:8000"
