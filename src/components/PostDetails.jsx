@@ -115,7 +115,7 @@ function PostDetails() {
         </div>
         {/* Comments */}
         {comments?.map((c)=>(
-        <Comments key={c._id} c={c} />
+        <Comments key={c._id} c={c} posts={posts} />
         ))}
         {/* Write Comment */}
         <div className="w-full flex flex-col mt-4 md:flex-row">
