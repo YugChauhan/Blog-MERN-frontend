@@ -1,2 +1,2 @@
-export const URL="https://the-bloger-server.onrender.com"
-export const IF="https://the-bloger-server.onrender.com/images/"
+export const URL="https://the-bloger-backend.onrender.com"
+export const IF="https://the-bloger-backend.onrender.com/images/"
